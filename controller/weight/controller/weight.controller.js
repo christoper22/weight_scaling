@@ -7,6 +7,21 @@ const getWeightData = async (x) => {
   return fileContent;
 };
 
+//for convert to kg
+function convertToKg(str) {
+  // Menghapus spasi dan karakter 'g' dari string
+  const cleanedStr = str.trim().replace('g', '');
+
+  // Mengubah string menjadi angka desimal
+  const grams = parseFloat(cleanedStr);
+
+  // Mengonversi gram menjadi kilogram dengan pembulatan empat desimal
+  const kilograms = (grams / 1000).toFixed(2);
+
+  // Mengembalikan nilai dalam format yang diinginkan
+  return kilograms + ' kg';
+}
+
 exports.getWeight = async (req, res, next) => {
   try {
     // Read the file synchronously

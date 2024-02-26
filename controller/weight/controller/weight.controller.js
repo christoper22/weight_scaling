@@ -7,19 +7,12 @@ const getWeightData = async (x) => {
   return fileContent;
 };
 
-//for convert to kg
-function convertToKg(str) {
-  // Menghapus spasi dan karakter 'g' dari string
-  const cleanedStr = str.trim().replace('g', '');
+function convertStringToWeightArray(str) {
+  // Extract the numeric value and the unit from the string
+  const [, value, unit] = str.match(/=*\s*([\d.]+)\s*(\w+)/);
 
-  // Mengubah string menjadi angka desimal
-  const grams = parseFloat(cleanedStr);
-
-  // Mengonversi gram menjadi kilogram dengan pembulatan empat desimal
-  const kilograms = (grams / 1000).toFixed(2);
-
-  // Mengembalikan nilai dalam format yang diinginkan
-  return kilograms + ' kg';
+  // Return the value as a float and the unit as a string
+  return [parseFloat(value), unit];
 }
 
 exports.getWeight = async (req, res, next) => {
@@ -28,7 +21,7 @@ exports.getWeight = async (req, res, next) => {
     const fileContent = await getWeightData('data.txt');
     console.log('File content:', fileContent);
 
-    res.status(200).json({ data: fileContent });
+    res.status(200).json({ data: convertStringToWeightArray(fileContent) });
   } catch (err) {
     console.error('Error reading file:', err);
   }
@@ -39,7 +32,7 @@ exports.getWeight1 = async (req, res, next) => {
     const fileContent = await getWeightData('data1.txt');
     console.log('File content:', fileContent);
 
-    res.status(200).json({ data: fileContent });
+    res.status(200).json({ data: convertStringToWeightArray(fileContent) });
   } catch (err) {
     console.error('Error reading file:', err);
   }
@@ -50,7 +43,7 @@ exports.getWeight2 = async (req, res, next) => {
     const fileContent = await getWeightData('data2.txt');
     console.log('File content:', fileContent);
 
-    res.status(200).json({ data: fileContent });
+    res.status(200).json({ data: convertStringToWeightArray(fileContent) });
   } catch (err) {
     console.error('Error reading file:', err);
   }
